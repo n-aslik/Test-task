@@ -1,55 +1,63 @@
-times=int(input("Введите кол-во записей:"))
-file=open("foods.txt","w",encoding="UTF-8")
-for i in range(times):
-    text=input("Введите новую запись:").lower()
-    file.write(f"{text}\n")
-file.close()
 class Foods:
-    def add_to_list(filename):
-        global row
-        fileread=open(filename,encoding="UTF-8")
-        row=fileread.readlines()
-        print(row)
-        fileread.close()
-    def update_data(id,txt,filename):
-        file=open(filename,"w",encoding="UTF-8")
-        file.write(f"Обновлённый список:\n")
-        row[id]=txt
-        print(row)
-        for i in row:
-            file.write(f"{i}\n")
-        file.close()
-    def delete_data(id,filename):
-        file=open(filename,"w",encoding="UTF-8")
-        file.write(f"Список после удаления:\n")
-        popdata=row.pop(id)
-        print(row)
-        for i in row:
-            file.write(f"{i}\n")
-        file.close()
-    def sumprice(filename):
+    def __init__(self):
+        self.foods=[]
+    def add_to_list(self,val):
+        try:
+            self.foods.append(val)
+            print(self.foods)
+        except Exception as ex:
+            print(ex)
+    def update_list_values(self,id,txt):
+        try:
+            for i in self.foods:
+                i[id]=txt
+                print(f"Обновлённый список:\n{i}")
+        except  Exception as ex:
+            print(ex)
+    def delete_list_values(self,id):
+        try:
+            for i in self.foods:
+                popdata=i.pop(id)
+                print(f"Список после удаления:\n{i}")
+        except Exception as ex:
+            print(ex)
+    def sumprice(self):
         total=0
-        for i in row:
-            i=i.replace("\n","")
-            if "-" in i :
-                listpart=i.split("-")
-                if listpart[-1].isdigit():
-                    total+=int(listpart[-1])
-        print(f"Общая сумма:{total}")
-        file=open(filename,"w",encoding="UTF-8")
-        file.write(f"Общая сумма:\n{total}\n")
-        file.close()
-        
-        
-     
-lst=Foods
-lst.add_to_list("foods.txt")
-index_u=int(input("Введите id для изменения:"))
-val_u=(input("Введите новое значение:"))
-lst.update_data(index_u,val_u,"foods.txt")
-index_d=int(input("Введите id для удаления:"))
-lst.delete_data(index_d,"foods.txt")
-lst.sumprice("foods.txt")
+        try:
+            for i in self.foods:
+                for j in i:
+                    j=j.replace("\n","")
+                    if "-" in j :
+                        listpart=j.split("-")
+                        if listpart[-1].isdigit():
+                            total+=int(listpart[-1])
+                print(f"Общая сумма:{total}\n")
+        except Exception as ex:
+            print(ex)
+                
+lst=Foods()
+array=[]
+times=int(input("Введите кол-во записей:"))
+with open("foods.txt","w",encoding="UTF-8") as file:
+    for i in range(times):
+        text=input("Введите новую запись:").lower()
+        file.write(f"{text}\n")
+    file.close()
+with open("foods.txt",encoding="UTF-8") as file:
+    array=file.readlines()
+    lst.add_to_list(array)
+    index_u=int(input("Введите id для изменения:"))
+    val_u=(input("Введите новое значение:"))
+    lst.update_list_values(index_u,val_u)
+    index_d=int(input("Введите id для удаления:"))
+    lst.delete_list_values(index_d)
+    lst.sumprice()
+    file.close()
+   
+    
+
+
+   
 
     
 
